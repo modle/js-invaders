@@ -13,7 +13,7 @@ players = {
       this.boundaries.insideLeft = player.getLeft() > 0;
     },
     collidedWithBarrier : function(player) {
-      return collisions.withShields(player);
+      return false;
     },
   },
   updateAvailableDirections : function() {

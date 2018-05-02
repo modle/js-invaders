@@ -2,7 +2,7 @@
 var knobsAndLevers = {
   init : function() {
     this.general.init(this);
-    this.invader.init(this);
+    this.invaders.init(this);
     this.player.init(this);
     this.lasers.init(this);
     this.shields.init(this);
@@ -37,8 +37,41 @@ var knobsAndLevers = {
     gridDivisor : 25,
   },
   targetLeaderboard : 'invaderLeaderboard',
-  invader : {
+  game : {
+    playerCollisionsEnabled : true,
+    interval : {
+      min : 0,
+      max : 0,
+    },
+    sounds : {
+      value : true,
+      default : true,
+      setting : {
+        value : false,
+        state : 'ON',
+        text : 'SOUNDS',
+        render : function() {
+          return supporting.align(this.text) + this.state;
+        },
+      },
+    },
+    gameOverDelay : 600,
+    startLevel : 0,
+    maxShields : 5,
+    tier : {
+      incrementScore : 10000,
+      current: 1,
+      max : 5,
+      isMaxed : false,
+      update : function(newTier) {
+        this.current = newTier;
+        this.isMaxed = this.current >= this.max ? true : false;
+      },
+    }
+  },
+  invaders : {
     baseSpeed : 10,
+    initialAmount : 10,
     maxNumber : 10,
     pointValue : 20,
     args : {
@@ -75,38 +108,6 @@ var knobsAndLevers = {
     blogUrl : 'http://blog.matthewodle.com/category/space-invaders/',
     sourceUrl : 'https://gitlab.com/taciturn-pachyderm/space-invaders',
     gifLocation : 'app/static/media/images/background.gif',
-  },
-  game : {
-    playerCollisionsEnabled : true,
-    interval : {
-      min : 0,
-      max : 0,
-    },
-    sounds : {
-      value : true,
-      default : true,
-      setting : {
-        value : false,
-        state : 'ON',
-        text : 'SOUNDS',
-        render : function() {
-          return supporting.align(this.text) + this.state;
-        },
-      },
-    },
-    gameOverDelay : 600,
-    startLevel : 0,
-    maxShields : 5,
-    tier : {
-      incrementScore : 10000,
-      current: 1,
-      max : 5,
-      isMaxed : false,
-      update : function(newTier) {
-        this.current = newTier;
-        this.isMaxed = this.current >= this.max ? true : false;
-      },
-    }
   },
   lasers : {
     speed : {
@@ -148,33 +149,13 @@ var knobsAndLevers = {
       knobsAndLevers.resetParameter(this.quantity);
     },
   },
-  shields : {
-    initialAmount : 5,
-    side : 0,
-    args : {
-      extraArgs : {
-        hitPoints : 4,
-        type : 'shield',
-      },
-      sprites : {
-        one : {files : ['shield-1.png'], images : []},
-      },
-      getSpriteKey : function(obj) {
-        return 'one';
-      },
-    },
-    init : function(configs) {
-      this.args.width = configs.general.gridSquareSideLength * 0.8;
-      this.args.height = configs.general.gridSquareSideLength * 0.8;
-      console.log('shield defaults initialized');
-    },
-  },
   player : {
     defaultLives : 3,
     dimensions : {width : 30, height : 30},
     args : {
-      width : 20,
-      height : 20,
+      width : 100,
+      height : 40,
+      y : 750,
       extraArgs : {
         type : 'player',
         speed : {x : 0, y : 0},
@@ -213,6 +194,27 @@ var knobsAndLevers = {
     },
     resetCheats : function() {
       knobsAndLevers.resetParameter(this.speed);
+    },
+  },
+  shields : {
+    initialAmount : 4,
+    side : 0,
+    args : {
+      extraArgs : {
+        hitPoints : 4,
+        type : 'shield',
+      },
+      sprites : {
+        one : {files : ['shield-1.png'], images : []},
+      },
+      getSpriteKey : function(obj) {
+        return 'one';
+      },
+    },
+    init : function(configs) {
+      this.args.width = configs.general.gridSquareSideLength * 4;
+      this.args.height = configs.general.gridSquareSideLength * 3;
+      console.log('shield defaults initialized');
     },
   },
   text : {
