@@ -1,0 +1,55 @@
+canvas {
+  position: absolute;
+  background-color: #f1f1f1;
+}
+
+#canvas-wrapper {
+  border: 1px solid #d3d3d3;
+  margin: 0 auto;
+  padding: 0;
+  display: block;
+  width: 800px;
+  height: 800px;
+}
+
+#canvas-background {
+  position: absolute;
+  width: 800px;
+  opacity: 0.1;
+}
+
+.linkButton {
+  margin: 0 20px;
+  display: inline-flex;
+}
+
+.linkButtonWrapper {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 20px;
+  background: white;
+}
+
+@media (min-device-width: 768px) {
+  .linkButtonWrapper {
+    display: flex;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: auto;
+    background: white;
+  }
+}
+
+@font-face {
+  font-family: "Press Start";
+  src: url("css/fonts/prstart.ttf");
+}
+
+#stats {
+  position: fixed;
+  bottom: 0;
+  left : 0;
+}
