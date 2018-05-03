@@ -28,6 +28,7 @@ var knobsAndLevers = {
   general : {
     init : function(configs) {
       this.gridSquareSideLength = Math.floor(configs.canvas.width / configs.canvas.gridDivisor);
+      console.log(this.gridSquareSideLength);
       console.log('general defaults initialized');
     },
   },
@@ -71,8 +72,8 @@ var knobsAndLevers = {
   },
   invaders : {
     baseSpeed : 10,
-    initialAmount : 10,
-    maxNumber : 10,
+    initialAmount : 6,
+    maxNumber : 7,
     pointValue : 20,
     args : {
       y : 50,
@@ -80,6 +81,7 @@ var knobsAndLevers = {
         animationInterval : 50,
         hitPoints : 1,
         type : 'invader',
+        speed : {x : 2, y : 0},
       },
       sprites : {
         one : {activeIndex : 0, files : ['invader-a-1.png', 'invader-a-2.png'], images : []},
@@ -90,14 +92,14 @@ var knobsAndLevers = {
     },
     defaults : {
       directionX : 1,
+      distanceMovedX : 0,
       reverseDirectionX : false,
-      moveVertically : true,
       updated : false,
     },
     init : function(configs) {
-      this.args.width = configs.general.gridSquareSideLength;
-      this.args.height = configs.general.gridSquareSideLength;
-      this.spacing = knobsAndLevers.canvas.width / 14;
+      this.args.width = configs.general.gridSquareSideLength * 3;
+      this.args.height = configs.general.gridSquareSideLength * 2;
+      this.spacing = knobsAndLevers.canvas.width / 8;
       this.args.x = configs.canvas.width / 2;
       console.log('invader defaults initialized');
     },

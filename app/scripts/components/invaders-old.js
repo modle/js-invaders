@@ -66,15 +66,15 @@ var invaders = {
   cannotAdd : function(invaders) {
     return this.invaders.find(checkInvader => checkInvader.crashWith(invaders));
   },
+  resetInvaderUpdateFlag : function() {
+    this.invaders.map(invaders => invaders.updated = false);
+  },
   determineDirections : function() {
     // if any collide with edge, move them all down and change x direction
     this.invaders.filter(invaders => !invaders.updated).forEach(invaders => {
       this.checkHorizonalCollisions(invaders);
       this.reverseHorizontal(invaders);
     });
-  },
-  resetInvaderUpdateFlag : function() {
-    this.invaders.map(invaders => invaders.updated = false);
   },
   checkHorizonalCollisions : function(invaders) {
     if (invaders.distanceMovedY === 0) {
