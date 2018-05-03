@@ -75,7 +75,7 @@ var knobsAndLevers = {
     maxNumber : 10,
     pointValue : 20,
     args : {
-      y : 0,
+      y : 50,
       extraArgs : {
         animationInterval : 50,
         hitPoints : 1,
@@ -97,6 +97,7 @@ var knobsAndLevers = {
     init : function(configs) {
       this.args.width = configs.general.gridSquareSideLength;
       this.args.height = configs.general.gridSquareSideLength;
+      this.spacing = knobsAndLevers.canvas.width / 14;
       this.args.x = configs.canvas.width / 2;
       console.log('invader defaults initialized');
     },
@@ -198,8 +199,10 @@ var knobsAndLevers = {
   },
   shields : {
     initialAmount : 4,
+    maxNumber : 4,
     side : 0,
     args : {
+      y : 600,
       extraArgs : {
         hitPoints : 1,
         type : 'shield',
@@ -214,6 +217,7 @@ var knobsAndLevers = {
     init : function(configs) {
       this.args.width = configs.general.gridSquareSideLength * 4;
       this.args.height = configs.general.gridSquareSideLength * 3;
+      this.spacing = knobsAndLevers.canvas.width / 5;
       console.log('shield defaults initialized');
     },
   },

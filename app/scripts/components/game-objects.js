@@ -19,6 +19,7 @@ var gameObjects = {
     spawn : function(type, amount) {
       let coordinates = {};
       let theType = this[type];
+      //TODO replace these if statements with an eligibleToSpawn()
       if (type == 'shields' && theType.numberSpawned >= knobsAndLevers[type].initialAmount) {
         return;
       };
@@ -60,12 +61,15 @@ var gameObjects = {
     },
   },
   setCoordinates : function(type) {
-    this[type].coordinates = [
-      {x : knobsAndLevers.canvas.width * 0.1, y : 600},
-      {x : knobsAndLevers.canvas.width * 0.315, y : 600},
-      {x : knobsAndLevers.canvas.width * 0.53, y : 600},
-      {x : knobsAndLevers.canvas.width * 0.745, y : 600},
-    ];
+    let yCoord = knobsAndLevers[type].args.y;
+    let lastX = -knobsAndLevers[type].spacing / 2;
+    let coordinates = {};
+    while (this[type].coordinates.length < knobsAndLevers[type].maxNumber) {
+      let coordinates = {x : lastX + knobsAndLevers[type].spacing, y : yCoord};
+      lastX = coordinates.x;
+      this[type].coordinates.push(coordinates);
+      console.log(type, yCoord, lastX, this[type].coordinates.length);
+    };
   },
   removeDestroyedTargets : function(targets) {
     this.types.forEach(type =>
