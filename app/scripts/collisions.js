@@ -8,20 +8,19 @@ var collisions = {
   },
   functionOverrides : {
     handleSpecialKills(target) {
-      if (target.type === 'invader') {
-        shields.make({x : target.x, y : target.y})
-        invaders.numberKilled += 1;
+      if (target.type == 'invader') {
+        gameObjects.invaders.numberKilled += 1;
       };
     },
     getPlayerEnemies : function() {
       let enemies = [];
-      enemies.push(...invaders.invaders);
+      enemies.push(...gameObjects.invaders.objects);
       return enemies;
     },
     getLaserTargets : function() {
       let targets = [];
-      targets.push(...shields.shields);
-      targets.push(...invaders.invaders);
+      targets.push(...gameObjects.shields.objects);
+      targets.push(...gameObjects.invaders.objects);
       return targets;
     },
     check : function() {
@@ -32,7 +31,7 @@ var collisions = {
       Object.keys(players.players).forEach(player =>
         this.checkPlayerVsEnemies(players.players[player], this.getPlayerEnemies())
       );
-      this.removeDestroyedTargets(targets);
+      gameObjects.removeDestroyedTargets();
     },
     checkPlayerVsEnemies : function(player, targets) {
       if (!knobsAndLevers.game.playerCollisionsEnabled) {
@@ -44,10 +43,6 @@ var collisions = {
           return;
         };
       });
-    },
-    removeDestroyedTargets : function(targets) {
-      shields.shields = shields.shields.filter(shield => shield.hitPoints > 0);
-      invaders.invaders = invaders.invaders.filter(invader => invader.hitPoints > 0);
     },
   },
   withShields : function(obj) {

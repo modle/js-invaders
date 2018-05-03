@@ -16,9 +16,10 @@ var init = {
     sounds.init();
     texts.init();
     collisions.init();
-    invaders.init();
     lasers.init();
-    shields.init();
+    gameObjects.init();
+    // invaders.init();
+    // shields.init();
 
     console.log('space invaders game initialized');
   },

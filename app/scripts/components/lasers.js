@@ -49,6 +49,12 @@ var lasers = {
     },
   },
   eligibleToSpawn : function(player) {
+    // console.log(
+    //   controls.isFiring(player),
+    //   supporting.everyinterval(game.gameArea.frameNo, knobsAndLevers.lasers.interval),
+    //   'frameno is', game.gameArea.frameNo,
+    //   knobsAndLevers.lasers.interval
+    // );
     let eligible = this.lasers[player.name].length < knobsAndLevers.lasers.quantity.value
       && supporting.everyinterval(
         game.gameArea.frameNo, knobsAndLevers.lasers.interval

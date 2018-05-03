@@ -201,7 +201,7 @@ var knobsAndLevers = {
     side : 0,
     args : {
       extraArgs : {
-        hitPoints : 4,
+        hitPoints : 1,
         type : 'shield',
       },
       sprites : {
