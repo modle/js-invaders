@@ -34,7 +34,7 @@ var collisions = {
       gameObjects.removeDestroyedTargets();
     },
     checkPlayerVsEnemies : function(player, targets) {
-      if (!knobsAndLevers.game.playerCollisionsEnabled) {
+      if (!dials.game.playerCollisionsEnabled) {
         return;
       };
       targets.forEach(target => {

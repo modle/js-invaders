@@ -1,5 +1,5 @@
-// abstract common knobsAndLevers and move them to canvas-libs
-var knobsAndLevers = {
+// abstract common dials and move them to canvas-libs
+var dials = {
   init : function() {
     this.general.init(this);
     this.invaders.init(this);
@@ -7,7 +7,7 @@ var knobsAndLevers = {
     this.lasers.init(this);
     this.shields.init(this);
     this.text.init(this);
-    console.log('knobsAndLevers initialized');
+    console.log('dials initialized');
   },
   resetCheats : function() {
     this.lasers.resetCheats();
@@ -99,7 +99,7 @@ var knobsAndLevers = {
     init : function(configs) {
       this.args.width = configs.general.gridSquareSideLength * 3;
       this.args.height = configs.general.gridSquareSideLength * 2;
-      this.spacing = knobsAndLevers.canvas.width / 8;
+      this.spacing = dials.canvas.width / 8;
       this.args.x = configs.canvas.width / 2;
       console.log('invader defaults initialized');
     },
@@ -148,8 +148,8 @@ var knobsAndLevers = {
       console.log('laser defaults initialized');
     },
     resetCheats : function() {
-      knobsAndLevers.resetParameter(this.speed);
-      knobsAndLevers.resetParameter(this.quantity);
+      dials.resetParameter(this.speed);
+      dials.resetParameter(this.quantity);
     },
   },
   player : {
@@ -172,7 +172,7 @@ var knobsAndLevers = {
       },
       constructorFunctions : {
         setX : function(player) {
-          player.x = knobsAndLevers.player.startX[Object.keys(players.players).length];
+          player.x = dials.player.startX[Object.keys(players.players).length];
         },
       },
     },
@@ -196,7 +196,7 @@ var knobsAndLevers = {
       this.startY = configs.canvas.height - this.dimensions.height - 1;
     },
     resetCheats : function() {
-      knobsAndLevers.resetParameter(this.speed);
+      dials.resetParameter(this.speed);
     },
   },
   shields : {
@@ -219,7 +219,7 @@ var knobsAndLevers = {
     init : function(configs) {
       this.args.width = configs.general.gridSquareSideLength * 4;
       this.args.height = configs.general.gridSquareSideLength * 3;
-      this.spacing = knobsAndLevers.canvas.width / 5;
+      this.spacing = dials.canvas.width / 5;
       console.log('shield defaults initialized');
     },
   },

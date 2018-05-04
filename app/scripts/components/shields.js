@@ -11,7 +11,7 @@ var shields = {
   functionOverrides : {
     manage : function() {
       if (game.gameArea.frameNo == 1) {
-        this.spawn(knobsAndLevers.shields.initialAmount);
+        this.spawn(dials.shields.initialAmount);
       };
       this.update();
     },
@@ -19,10 +19,10 @@ var shields = {
       let coordinates = {};
       while (this.shields.length < this.coordinates.length) {
         coordinates = this.coordinates[this.shields.length % this.coordinates.length];
-        if (coordinates.y > knobsAndLevers.player.topLimit) {
+        if (coordinates.y > dials.player.topLimit) {
           continue;
         };
-        this.make(coordinates, knobsAndLevers.shields.color);
+        this.make(coordinates, dials.shields.color);
       };
     },
     make : function(coordinates, color) {
@@ -33,7 +33,7 @@ var shields = {
       this.shields.push(shield);
     },
     generate : function(coordinates, color) {
-      let shield = new Component(knobsAndLevers.shields.args);
+      let shield = new Component(dials.shields.args);
       shield.x = coordinates.x,
       shield.y = coordinates.y,
       shield.pointValue = metrics.currentLevel;
@@ -50,10 +50,10 @@ var shields = {
   },
   setCoordinates : function() {
     this.coordinates = [
-      {x : knobsAndLevers.canvas.width * 0.1, y : 600},
-      {x : knobsAndLevers.canvas.width * 0.315, y : 600},
-      {x : knobsAndLevers.canvas.width * 0.53, y : 600},
-      {x : knobsAndLevers.canvas.width * 0.745, y : 600},
+      {x : dials.canvas.width * 0.1, y : 600},
+      {x : dials.canvas.width * 0.315, y : 600},
+      {x : dials.canvas.width * 0.53, y : 600},
+      {x : dials.canvas.width * 0.745, y : 600},
     ];
   },
 };

@@ -12,7 +12,7 @@ var gameObjects = {
   functionOverrides : {
     manage : function() {
       this.types.forEach(type => {
-        this.spawn(type, knobsAndLevers[type].initialAmount);
+        this.spawn(type, dials[type].initialAmount);
         this.update(type, this[type].objects);
       });
     },
@@ -20,7 +20,7 @@ var gameObjects = {
       let coordinates = {};
       let theType = this[type];
       //TODO replace these if statements with an eligibleToSpawn()
-      if (type == 'shields' && theType.numberSpawned >= knobsAndLevers[type].initialAmount) {
+      if (type == 'shields' && theType.numberSpawned >= dials[type].initialAmount) {
         return;
       };
       if (type == 'invaders' && theType.numberKilled != theType.numberSpawned) {
@@ -28,7 +28,7 @@ var gameObjects = {
       };
       while (theType.objects.length < theType.coordinates.length) {
         coordinates = theType.coordinates[theType.objects.length % theType.coordinates.length];
-        this.make(type, coordinates, knobsAndLevers[type].color);
+        this.make(type, coordinates, dials[type].color);
       };
     },
     make : function(type, coordinates, color) {
@@ -40,10 +40,10 @@ var gameObjects = {
       this[type].objects.push(obj);
     },
     generate : function(type, coordinates, color) {
-      let theThing = Object.assign(new Component(knobsAndLevers[type].args), knobsAndLevers[type].defaults);
+      let theThing = Object.assign(new Component(dials[type].args), dials[type].defaults);
       theThing.x = coordinates.x,
       theThing.y = coordinates.y,
-      theThing.pointValue = knobsAndLevers[type].pointValue || metrics.currentLevel + 1;
+      theThing.pointValue = dials[type].pointValue || metrics.currentLevel + 1;
       return theThing;
     },
     update : function(type, objects) {
@@ -63,16 +63,16 @@ var gameObjects = {
         if (type != 'shields') {
           this[type].numberSpawned = 0;
         };
-        this[type].numberKilled = 0;  
+        this[type].numberKilled = 0;
       });
     },
   },
   setCoordinates : function(type) {
-    let yCoord = knobsAndLevers[type].args.y;
-    let lastX = -knobsAndLevers[type].spacing / 2;
+    let yCoord = dials[type].args.y;
+    let lastX = -dials[type].spacing / 2;
     let coordinates = {};
-    while (this[type].coordinates.length < knobsAndLevers[type].maxNumber) {
-      let coordinates = {x : lastX + knobsAndLevers[type].spacing, y : yCoord};
+    while (this[type].coordinates.length < dials[type].maxNumber) {
+      let coordinates = {x : lastX + dials[type].spacing, y : yCoord};
       lastX = coordinates.x;
       this[type].coordinates.push(coordinates);
     };
@@ -101,8 +101,8 @@ var gameObjects = {
   },
   hasCollidedWithWall : function(invader) {
     let isOutside = invader.getLeft() <= 1
-          || invader.getRight() >= knobsAndLevers.canvas.width - 1;
-    let hasMovedEnoughHorizontally = invader.distanceMovedX > knobsAndLevers.general.gridSquareSideLength;
+          || invader.getRight() >= dials.canvas.width - 1;
+    let hasMovedEnoughHorizontally = invader.distanceMovedX > dials.general.gridSquareSideLength;
     let hasCollided = isOutside && hasMovedEnoughHorizontally;
     return hasCollided;
   },
@@ -110,7 +110,7 @@ var gameObjects = {
     this.invaders.objects.forEach(element => {
       if (this.invaders.reverseDirectionX) {
         element.speedX *= -1;
-        element.y += knobsAndLevers.general.gridSquareSideLength;
+        element.y += dials.general.gridSquareSideLength;
       } else {
         element.distanceMovedX += 1;
       };

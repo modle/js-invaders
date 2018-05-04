@@ -29,8 +29,8 @@ var lasers = {
       this.lasers[player.name].push(this.make(player));
     },
     make : function(player) {
-      let laserArgs = knobsAndLevers.lasers.args;
-      laserArgs.extraArgs.speed.y = -1 * knobsAndLevers.lasers.speed.value;
+      let laserArgs = dials.lasers.args;
+      laserArgs.extraArgs.speed.y = -1 * dials.lasers.speed.value;
       laserArgs.x = player.x + player.width / 2;
       laserArgs.y = player.y;
       return new Component(laserArgs);
@@ -51,13 +51,13 @@ var lasers = {
   eligibleToSpawn : function(player) {
     // console.log(
     //   controls.isFiring(player),
-    //   supporting.everyinterval(game.gameArea.frameNo, knobsAndLevers.lasers.interval),
+    //   supporting.everyinterval(game.gameArea.frameNo, dials.lasers.interval),
     //   'frameno is', game.gameArea.frameNo,
-    //   knobsAndLevers.lasers.interval
+    //   dials.lasers.interval
     // );
-    let eligible = this.lasers[player.name].length < knobsAndLevers.lasers.quantity.value
+    let eligible = this.lasers[player.name].length < dials.lasers.quantity.value
       && supporting.everyinterval(
-        game.gameArea.frameNo, knobsAndLevers.lasers.interval
+        game.gameArea.frameNo, dials.lasers.interval
       )
       && controls.isFiring(player);
     return eligible;

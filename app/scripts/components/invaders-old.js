@@ -28,8 +28,8 @@ var invaders = {
       this.add(invaders);
     },
     make : function() {
-      let invaders = Object.assign(new Component(knobsAndLevers.invaders.args), knobsAndLevers.invaders.defaults);
-      let pointValue = knobsAndLevers.invaders.pointValue;
+      let invaders = Object.assign(new Component(dials.invaders.args), dials.invaders.defaults);
+      let pointValue = dials.invaders.pointValue;
       invaders.pointValue = supporting.getRandom(pointValue, pointValue + 20);
       invaders.sound = sounds.getSound('invaders');
       return invaders;
@@ -61,7 +61,7 @@ var invaders = {
     return this.numberSpawned < this.segments;
   },
   setXPosition : function() {
-    knobsAndLevers.invaders.args.x = this.positions[this.invaders.length % this.positions.length];
+    dials.invaders.args.x = this.positions[this.invaders.length % this.positions.length];
   },
   cannotAdd : function(invaders) {
     return this.invaders.find(checkInvader => checkInvader.crashWith(invaders));
