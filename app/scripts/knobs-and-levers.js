@@ -74,6 +74,7 @@ var dials = {
     baseSpeed : 10,
     initialAmount : 6,
     maxNumber : 7,
+    rows : 3,
     pointValue : 20,
     args : {
       y : 50,
@@ -81,7 +82,8 @@ var dials = {
         animationInterval : 50,
         hitPoints : 1,
         type : 'invader',
-        speed : {x : 2, y : 0},
+        // speed : {x : 0, y : 0},
+        speed : {x : 0.25, y : 0},
       },
       sprites : {
         one : {activeIndex : 0, files : ['invader-a-1.png', 'invader-a-2.png'], images : []},
@@ -201,7 +203,7 @@ var dials = {
   },
   shields : {
     initialAmount : 4,
-    maxNumber : 4,
+    maxNumber : 5,
     side : 0,
     args : {
       y : 600,

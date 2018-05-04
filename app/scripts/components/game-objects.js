@@ -1,8 +1,8 @@
 /*jslint white: true */
 var gameObjects = {
   types : ['invaders', 'shields'],
-  shields : {objects : [], coordinates : [], numberSpawned : 0},
-  invaders : {objects : [], coordinates : [], numberSpawned : 0, numberKilled : 0, reverseDirectionX : false},
+  shields : {objects : [], coordinates : [], numberSpawned : 0, currRow : 0},
+  invaders : {objects : [], coordinates : [], numberSpawned : 0, numberKilled : 0, reverseDirectionX : false, currRow : 0},
   init : function() {
     Object.assign(this, gameObjectsBase);
     supporting.applyOverrides(this);
@@ -68,13 +68,19 @@ var gameObjects = {
     },
   },
   setCoordinates : function(type) {
-    let yCoord = dials[type].args.y;
-    let lastX = -dials[type].spacing / 2;
-    let coordinates = {};
-    while (this[type].coordinates.length < dials[type].maxNumber) {
-      let coordinates = {x : lastX + dials[type].spacing, y : yCoord};
-      lastX = coordinates.x;
-      this[type].coordinates.push(coordinates);
+    let coordinates = this[type].coordinates;
+    console.log(type, 'coordinates are', coordinates);
+    let max = dials[type].maxNumber;
+    let rows = dials[type].rows ? dials[type].rows : 1;
+    let toMake = max * rows;
+    let spacing = dials[type].spacing;
+    lastX = coordinates.length % max == 0 ? -spacing : coordinates[coordinates.length - 1].x;
+    this[type].currRow = coordinates.length % max == 0 ? this[type].currRow + 1 : this[type].currRow;
+    let xCoord = lastX + spacing;
+    let yCoord = dials[type].args.y + ((this[type].currRow - 1) * spacing);
+    coordinates.push({x : xCoord, y : yCoord});
+    if (coordinates.length < toMake) {
+      this.setCoordinates(type);
     };
   },
   removeDestroyedTargets : function(targets) {
