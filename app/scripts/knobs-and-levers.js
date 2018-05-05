@@ -35,7 +35,7 @@ var dials = {
   canvas : {
     width : 800,
     height : 800,
-    gridDivisor : 25,
+    gridDivisor : 100,
   },
   targetLeaderboard : 'invaderLeaderboard',
   game : {
@@ -78,6 +78,8 @@ var dials = {
     pointValue : 20,
     args : {
       y : 50,
+      width : 75,
+      height : 50,
       extraArgs : {
         animationInterval : 50,
         hitPoints : 1,
@@ -99,15 +101,15 @@ var dials = {
       updated : false,
     },
     init : function(configs) {
-      this.args.width = configs.general.gridSquareSideLength * 3;
-      this.args.height = configs.general.gridSquareSideLength * 2;
+      // this.args.width = configs.general.gridSquareSideLength * 3;
+      // this.args.height = configs.general.gridSquareSideLength * 2;
       this.spacing = dials.canvas.width / 8;
       this.args.x = configs.canvas.width / 2;
       console.log('invader defaults initialized');
     },
   },
   components : {
-    imageTypes : ['invader', 'shield', 'player'],
+    imageTypes : ['invader', 'player'],
   },
   dom : {
     blogUrl : 'http://blog.matthewodle.com/category/space-invaders/',
@@ -141,12 +143,14 @@ var dials = {
     },
     interval : 10,
     args : {
+      width : 2.5,
+      height : 12.5,
       color : 'purple',
       extraArgs : {type : 'laser', speed : {x : 0, y : 0}},
     },
     init : function(configs) {
-      this.args.width = configs.general.gridSquareSideLength / 10;
-      this.args.height = configs.general.gridSquareSideLength * 0.5;
+      // this.args.width = configs.general.gridSquareSideLength / 10;
+      // this.args.height = configs.general.gridSquareSideLength * 0.5;
       console.log('laser defaults initialized');
     },
     resetCheats : function() {
@@ -206,22 +210,46 @@ var dials = {
     maxNumber : 5,
     side : 0,
     args : {
+      color : 'black',
       y : 600,
       extraArgs : {
         hitPoints : 1,
         type : 'shield',
       },
-      sprites : {
-        one : {files : ['shield-1.png'], images : []},
-      },
-      getSpriteKey : function(obj) {
-        return 'one';
+      constructorFunctions : {
+        setShape : function(shield) {
+          shield.shape = 'rectangle';
+        },
       },
     },
+    gap : 24,
+    startVertGridIndex : 25,
+    edges : {left : 6, right : 21},
     init : function(configs) {
-      this.args.width = configs.general.gridSquareSideLength * 4;
-      this.args.height = configs.general.gridSquareSideLength * 3;
+      this.args.width = configs.general.gridSquareSideLength;
+      this.args.height = configs.general.gridSquareSideLength;
       this.spacing = dials.canvas.width / 5;
+      // only somewhat hardcoded
+      this.gridIndexOffsets = [
+        {y : 0, row : {from : 4, to : -4}},
+        {y : 1, row : {from : 3, to : -3}},
+        {y : 2, row : {from : 2, to : -2}},
+        {y : 3, row : {from : 1, to : -1}},
+        {y : 4, row : {from : 0, to : 0}},
+        {y : 5, row : {from : 0, to : 0}},
+        {y : 6, row : {from : 0, to : 0}},
+        {y : 7, row : {from : 0, to : 0}},
+        {y : 8, row : {from : 0, to : -11}},
+        {y : 8, row : {from : 10, to : 0}},
+        {y : 9, row : {from : 0, to : -12}},
+        {y : 9, row : {from : 11, to : 0}},
+        {y : 10, row : {from : 0, to : -12}},
+        {y : 10, row : {from : 12, to : 0}},
+        {y : 11, row : {from : 0, to : -12}},
+        {y : 11, row : {from : 12, to : 0}},
+        {y : 12, row : {from : 0, to : -12}},
+        {y : 12, row : {from : 12, to : 0}},
+      ],
       console.log('shield defaults initialized');
     },
   },
@@ -234,15 +262,16 @@ var dials = {
       gameInfoHeight : 40,
     },
     baseBackgroundParams : {
+      height : 25,
       color : "lightgrey",
       x : 0,
       extraArgs : {type:"background"},
     },
     init : function(configs) {
       this.baseParams.x = configs.canvas.width * 0.25;
-      this.baseBackgroundParams.height = configs.general.gridSquareSideLength;
+      // this.baseBackgroundParams.height = configs.general.gridSquareSideLength;
       this.baseBackgroundParams.width = configs.canvas.width;
-      this.baseParams.gameInfoHeight = configs.general.gridSquareSideLength * 1.3;
+      // this.baseParams.gameInfoHeight = configs.general.gridSquareSideLength * 1.3;
       console.log('text defaults initialized');
     },
   },

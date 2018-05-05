@@ -7,6 +7,11 @@ var gameObjects = {
     Object.assign(this, gameObjectsBase);
     supporting.applyOverrides(this);
     this.types.forEach(type => this.setCoordinates(type));
+    let shieldOffset = 0;
+    while (shieldOffset < game.gameArea.xVertices.length) {
+      this.setShieldCoordinates(shieldOffset);
+      shieldOffset += dials.shields.gap;
+    };
     console.log('shields initialized');
   },
   functionOverrides : {
@@ -68,6 +73,9 @@ var gameObjects = {
     },
   },
   setCoordinates : function(type) {
+    if (type == 'shields') {
+      return;
+    };
     let coordinates = this[type].coordinates;
     console.log(type, 'coordinates are', coordinates);
     let max = dials[type].maxNumber;
@@ -122,5 +130,22 @@ var gameObjects = {
       };
     });
     this.invaders.reverseDirectionX = false;
+  },
+  setShieldCoordinates : function(offset) {
+    let gridIndexOffsets = dials.shields.gridIndexOffsets;
+    let xVertices = game.gameArea.xVertices;
+    let yVertices = game.gameArea.yVertices;
+    let startVertGridIndex = yVertices.length - dials.shields.startVertGridIndex;
+    let edges = dials.shields.edges;
+    coordinates = [];
+    gridIndexOffsets.forEach(rows => {
+      for (i = edges.left + rows.row.from; i < edges.right + rows.row.to; i++) {
+        x = xVertices[i + offset];
+        if (x) {
+          coordinates.push({x : xVertices[i + offset], y : yVertices[startVertGridIndex + rows.y]});
+        };
+      };
+    });
+    this.shields.coordinates.push(...coordinates);
   },
 };

@@ -8,8 +8,7 @@ var main = {
     manageGameObjects : function() {
       metrics.manage();
       gameObjects.manage();
-      // shields.manage();
-      // invaders.manage();
+      // game.gameArea.drawGridVertices();
       lasers.manage();
       players.manage();
       collisions.check();
