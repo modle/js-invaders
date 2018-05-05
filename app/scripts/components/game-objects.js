@@ -1,23 +1,27 @@
 /*jslint white: true */
 var gameObjects = {
-  types : ['invaders', 'shields'],
-  shields : {objects : [], coordinates : [], numberSpawned : 0, currRow : 0},
-  invaders : {objects : [], coordinates : [], numberSpawned : 0, numberKilled : 0, reverseDirectionX : false, currRow : 0},
+  types : ['invaders', 'shields', 'bolts'],
+  shields : {objects : [], coordinates : [], numberSpawned : 0, currRow : 0, when : ['load'],},
+  invaders : {objects : [], coordinates : [], numberSpawned : 0, numberKilled : 0, reverseDirectionX : false, currRow : 0, when : ['level', 'load']},
+  bolts : {objects : [], when : ['interval'],},
   init : function() {
     Object.assign(this, gameObjectsBase);
     supporting.applyOverrides(this);
-    this.types.forEach(type => this.setCoordinates(type));
+    this.setCoordinates('invaders');
     let shieldOffset = 0;
     while (shieldOffset < game.gameArea.xVertices.length) {
       this.setShieldCoordinates(shieldOffset);
       shieldOffset += dials.shields.gap;
     };
-    console.log('shields initialized');
+    console.log('game objects initialized');
   },
   functionOverrides : {
     manage : function() {
       this.types.forEach(type => {
-        this.spawn(type, dials[type].initialAmount);
+        if (type != 'bolts') {
+          this.spawn(type, dials[type].initialAmount);
+        };
+        this.clearOutsideCanvas(type);
         this.update(type, this[type].objects);
       });
     },
@@ -57,18 +61,25 @@ var gameObjects = {
           this.determineDirections();
         };
         this.updateDirections();
+        this.shootBolts();
+      };
+      if (type == 'bolts') {
+
       };
       objects.forEach(obj => obj.update());
       objects.forEach(obj => obj.newPos());
     },
+    clearOutsideCanvas : function(type) {
+      this[type].objects = this[type].objects.filter(obj => obj.y < dials.canvas.height);
+    },
     clear : function() {
       console.log('calling clear on things');
       this.types.forEach(type => {
-        this[type].objects = [];
         if (type != 'shields') {
+          this[type].objects = [];
           this[type].numberSpawned = 0;
+          this[type].numberKilled = 0;
         };
-        this[type].numberKilled = 0;
       });
     },
   },
@@ -77,7 +88,6 @@ var gameObjects = {
       return;
     };
     let coordinates = this[type].coordinates;
-    console.log(type, 'coordinates are', coordinates);
     let max = dials[type].maxNumber;
     let rows = dials[type].rows ? dials[type].rows : 1;
     let toMake = max * rows;
@@ -85,7 +95,7 @@ var gameObjects = {
     lastX = coordinates.length % max == 0 ? -spacing : coordinates[coordinates.length - 1].x;
     this[type].currRow = coordinates.length % max == 0 ? this[type].currRow + 1 : this[type].currRow;
     let xCoord = lastX + spacing;
-    let yCoord = dials[type].args.y + ((this[type].currRow - 1) * spacing);
+    let yCoord = dials[type].args.y + ((this[type].currRow - 1) * spacing / 2);
     coordinates.push({x : xCoord, y : yCoord});
     if (coordinates.length < toMake) {
       this.setCoordinates(type);
@@ -147,5 +157,21 @@ var gameObjects = {
       };
     });
     this.shields.coordinates.push(...coordinates);
+  },
+  shootBolts : function() {
+    if (supporting.everyinterval(game.gameArea.frameNo, 150)) {
+      let invader = this.invaders.objects[supporting.roll(this.invaders.objects.length - 1).value];
+      let bolt = new Component(dials.lasers.args);
+      bolt.color = 'orange';
+      bolt.shape = 'rectangle';
+      bolt.speedY = 1;
+      bolt.width = 10;
+      bolt.height = 30;
+      bolt.hitPoints = 1;
+      bolt.pointValue = 1;
+      bolt.x = invader.x + invader.width / 2;
+      bolt.y = invader.y;
+      this.bolts.objects.push(bolt);
+    };
   },
 };

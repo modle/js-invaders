@@ -45,7 +45,7 @@ var dials = {
       max : 0,
     },
     sounds : {
-      value : true,
+      value : false,
       default : true,
       setting : {
         value : false,
@@ -74,7 +74,7 @@ var dials = {
     baseSpeed : 10,
     initialAmount : 6,
     maxNumber : 7,
-    rows : 3,
+    rows : 5,
     pointValue : 20,
     args : {
       y : 50,

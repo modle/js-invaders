@@ -15,12 +15,14 @@ var collisions = {
     getPlayerEnemies : function() {
       let enemies = [];
       enemies.push(...gameObjects.invaders.objects);
+      enemies.push(...gameObjects.bolts.objects);
       return enemies;
     },
     getLaserTargets : function() {
       let targets = [];
       targets.push(...gameObjects.shields.objects);
       targets.push(...gameObjects.invaders.objects);
+      targets.push(...gameObjects.bolts.objects);
       return targets;
     },
     check : function() {
@@ -31,6 +33,13 @@ var collisions = {
       Object.keys(players.players).forEach(player =>
         this.checkPlayerVsEnemies(players.players[player], this.getPlayerEnemies())
       );
+      gameObjects.bolts.objects.forEach(bolt => {
+        let shield = this.withShields(bolt);
+        if (shield) {
+          shield.hitPoints = 0;
+          bolt.hitPoints = 0;
+        };
+      })
       gameObjects.removeDestroyedTargets();
     },
     checkPlayerVsEnemies : function(player, targets) {
@@ -46,6 +55,6 @@ var collisions = {
     },
   },
   withShields : function(obj) {
-    return shields.shields.find(shield => obj.crashWith(shield));
+    return gameObjects.shields.objects.find(shield => obj.crashWith(shield));
   },
 };

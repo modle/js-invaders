@@ -8,7 +8,6 @@ var main = {
     manageGameObjects : function() {
       metrics.manage();
       gameObjects.manage();
-      // game.gameArea.drawGridVertices();
       lasers.manage();
       players.manage();
       collisions.check();
