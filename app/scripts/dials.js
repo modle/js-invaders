@@ -31,6 +31,20 @@ var dials = {
       console.log('general defaults initialized');
     },
   },
+  bolts : {
+    pointValue : 1,
+    args : {
+      shape : 'rectangle',
+      width : 10,
+      height : 30,
+      color : 'orange',
+      extraArgs : {
+        hitPoints : 1,
+        type : 'bolt',
+        speed : {x : 0, y : 1},
+      },
+    },
+  },
   canvas : {
     width : 800,
     height : 800,
@@ -44,7 +58,7 @@ var dials = {
       max : 0,
     },
     sounds : {
-      value : false,
+      value : true,
       default : true,
       setting : {
         value : false,
@@ -124,7 +138,7 @@ var dials = {
   },
   lasers : {
     speed : {
-      value : 10,
+      value : 5,
       default : 5,
       setting : {
         value : 15,
@@ -136,7 +150,7 @@ var dials = {
       },
     },
     quantity : {
-      value : 10,
+      value : 1,
       default : 1,
       setting : {
         value : 5,

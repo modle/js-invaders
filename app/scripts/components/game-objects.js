@@ -45,6 +45,7 @@ var gameObjects = {
         throw new Error('coordinate error: x: ' + coordinates.x + ', y: ' + coordinates.y);
       };
       let obj = this.generate(type, coordinates, color);
+      obj.sound = sounds.getSound(type);
       this[type].numberSpawned++;
       this[type].objects.push(obj);
     },
@@ -62,8 +63,10 @@ var gameObjects = {
           this.determineDirections();
         };
         if (this.invaders.objects.length < 3) {
+          this.invaders.sound = sounds.getSound('invaderfast');
           this.invaders.speed = dials.invaders.speed.fast;
         } else {
+          this.invaders.sound = sounds.getSound('invadernormal');
           this.invaders.speed = dials.invaders.speed.default;
         };
         this.updateVelocity();
@@ -142,6 +145,7 @@ var gameObjects = {
         element.distanceMovedX += 1;
       };
       element.speedX = Math.sign(element.speedX) * this.invaders.speed;
+      element.sound = this.invaders.sound;
     });
     this.invaders.reverseDirectionX = false;
   },
@@ -165,17 +169,11 @@ var gameObjects = {
   shootBolts : function() {
     if (supporting.everyinterval(game.gameArea.frameNo, 150)) {
       let invader = this.invaders.objects[supporting.roll(this.invaders.objects.length - 1).value];
-      let bolt = new Component(dials.lasers.args);
-      bolt.color = 'orange';
-      bolt.shape = 'rectangle';
-      bolt.speedY = 1;
-      bolt.width = 10;
-      bolt.height = 30;
-      bolt.hitPoints = 1;
-      bolt.pointValue = 1;
-      bolt.x = invader.x + invader.width / 2;
-      bolt.y = invader.y;
-      this.bolts.objects.push(bolt);
+      if (!invader) {
+        return;
+      };
+      this.make('bolts', {x : invader.x / 2, y : invader.y}, 'orange');
+      sounds.playSound('bolt');
     };
   },
 };
