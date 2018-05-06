@@ -7,6 +7,7 @@ var dials = {
     this.lasers.init(this);
     this.shields.init(this);
     this.text.init(this);
+    this.ufos.init(this);
     console.log('dials initialized');
   },
   resetCheats : function() {
@@ -37,7 +38,6 @@ var dials = {
       shape : 'rectangle',
       width : 10,
       height : 30,
-      color : 'orange',
       extraArgs : {
         hitPoints : 1,
         type : 'bolt',
@@ -54,8 +54,8 @@ var dials = {
   game : {
     playerCollisionsEnabled : true,
     interval : {
-      min : 0,
-      max : 0,
+      min : 1000,
+      max : 2500,
     },
     sounds : {
       value : true,
@@ -88,6 +88,8 @@ var dials = {
       default : 0.5,
       fast : 2,
     },
+    shootInterval : 200,
+    boltColor : 'orange',
     initialAmount : 6,
     maxNumber : 7,
     rows : 5,
@@ -129,7 +131,7 @@ var dials = {
     },
   },
   components : {
-    imageTypes : ['invader', 'player'],
+    imageTypes : ['invader', 'player', 'ufo'],
   },
   dom : {
     blogUrl : 'http://blog.matthewodle.com/category/space-invaders/',
@@ -218,8 +220,7 @@ var dials = {
       this.startX = [
         (configs.canvas.width - this.dimensions.width * 2) * 0.5,
         (configs.canvas.width + this.dimensions.width * 2) * 0.5,
-      ],
-      this.startY = configs.canvas.height - this.dimensions.height - 1;
+      ];
     },
     resetCheats : function() {
       dials.resetParameter(this.speed);
@@ -293,6 +294,51 @@ var dials = {
       this.baseBackgroundParams.width = configs.canvas.width;
       // this.baseParams.gameInfoHeight = configs.general.gridSquareSideLength * 1.3;
       console.log('text defaults initialized');
+    },
+  },
+  ufos : {
+    maxNumber : 1,
+    pointValue : 200,
+    interval : {
+      min: 1000,
+      max: 1500,
+    },
+    shootInterval : 200,
+    boltColor : 'green',
+    args : {
+      extraArgs : {
+        animationInterval : 50,
+        hitPoints : 1,
+        type : 'ufo',
+        speed : {x : 2, y : 0},
+      },
+      sprites : {
+        one : {activeIndex : 0, files : ['ufo1.png', 'ufo2.png'], images : []},
+      },
+      getSpriteKey : function(obj) {
+        return 'one';
+      },
+      constructorFunctions : {
+        setX : function(ufo) {
+          let theRoll = supporting.roll(sides = 2);
+          if (theRoll.crit) {
+            ufo.speedX *= -1;
+            ufo.x = game.gameArea.canvas.width;
+          } else {
+            ufo.x = 1 - ufo.width;
+          };
+        },
+        setY : function(ufo) {
+          ufo.y = supporting.getClosest(game.gameArea.yVertices, 50);
+        },
+      },
+    },
+    init : function(configs) {
+      this.initialInterval = supporting.getRandom(this.interval.min, this.interval.max);
+      this.args.width = configs.general.gridSquareSideLength * 10;
+      this.args.height = configs.general.gridSquareSideLength * 4;
+      this.interval = supporting.clone(configs.game.interval);
+      console.log('worm defaults initialized');
     },
   },
 };

@@ -1,9 +1,10 @@
 /*jslint white: true */
 var gameObjects = {
-  types : ['invaders', 'shields', 'bolts'],
+  types : ['invaders', 'shields', 'bolts', 'ufos'],
   shields : {objects : [], coordinates : [], numberSpawned : 0, currRow : 0, when : ['load'],},
   invaders : {objects : [], coordinates : [], numberSpawned : 0, numberKilled : 0, reverseDirectionX : false, currRow : 0, when : ['level', 'load']},
   bolts : {objects : [], when : ['interval'],},
+  ufos : {objects : [], when : ['interval'], coordinates : {x : 0, y : 0}},
   init : function() {
     Object.assign(this, gameObjectsBase);
     supporting.applyOverrides(this);
@@ -35,6 +36,10 @@ var gameObjects = {
       if (type == 'invaders' && theType.numberKilled != theType.numberSpawned) {
         return;
       };
+      if (type == 'ufos') {
+        this.spawnUfo();
+        return;
+      };
       while (theType.objects.length < theType.coordinates.length) {
         coordinates = theType.coordinates[theType.objects.length % theType.coordinates.length];
         this.make(type, coordinates, dials[type].color);
@@ -51,9 +56,10 @@ var gameObjects = {
     },
     generate : function(type, coordinates, color) {
       let theThing = Object.assign(new Component(dials[type].args), dials[type].defaults);
-      theThing.x = coordinates.x;
-      theThing.y = coordinates.y;
+      theThing.x = coordinates.x || theThing.x;
+      theThing.y = coordinates.y || theThing.y;
       theThing.row = coordinates.row;
+      theThing.color = color || theThing.color;
       theThing.pointValue = dials[type].pointValue || metrics.currentLevel + 1;
       return theThing;
     },
@@ -70,13 +76,16 @@ var gameObjects = {
           this.invaders.speed = dials.invaders.speed.default;
         };
         this.updateVelocity();
-        this.shootBolts();
+        this.shootBolts(type, this.invaders.objects);
+      };
+      if (type == 'ufos') {
+        this.shootBolts(type, this.ufos.objects);
       };
       objects.forEach(obj => obj.update());
       objects.forEach(obj => obj.newPos());
     },
     clearOutsideCanvas : function(type) {
-      this[type].objects = this[type].objects.filter(obj => obj.y < dials.canvas.height);
+      this[type].objects = this[type].objects.filter(obj => obj.y < dials.canvas.height && obj.x < dials.canvas.width + obj.width && obj.x > -obj.width);
     },
     clear : function() {
       console.log('calling clear on things');
@@ -140,7 +149,7 @@ var gameObjects = {
     this.invaders.objects.forEach(element => {
       if (this.invaders.reverseDirectionX) {
         element.speedX *= -1;
-        element.y += dials.general.gridSquareSideLength;
+        element.y += dials.general.gridSquareSideLength * 3;
       } else {
         element.distanceMovedX += 1;
       };
@@ -166,14 +175,22 @@ var gameObjects = {
     });
     this.shields.coordinates.push(...coordinates);
   },
-  shootBolts : function() {
-    if (supporting.everyinterval(game.gameArea.frameNo, 150)) {
-      let invader = this.invaders.objects[supporting.roll(this.invaders.objects.length - 1).value];
-      if (!invader) {
-        return;
-      };
-      this.make('bolts', {x : invader.x / 2, y : invader.y}, 'orange');
-      sounds.playSound('bolt');
+  shootBolts : function(type, objects) {
+    if (!supporting.everyinterval(game.gameArea.frameNo, dials[type].shootInterval)) {
+      return;
     };
+    let object = objects[supporting.roll(objects.length).value - 1];
+    if (!object) {
+      return;
+    };
+    this.make('bolts', {x : object.x - object.width / 2, y : object.y}, dials[type].boltColor);
+    sounds.playSound('bolt');
+  },
+  spawnUfo : function() {
+    if (this.ufos.objects.length >= dials.ufos.maxNumber || !supporting.everyinterval(game.gameArea.frameNo, dials.ufos.initialInterval)) {
+      return;
+    };
+    this.make('ufos', this.ufos.coordinates, '');
+    sounds.playSound('ufos');
   },
 };
