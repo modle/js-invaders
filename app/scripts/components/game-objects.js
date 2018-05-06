@@ -50,8 +50,9 @@ var gameObjects = {
     },
     generate : function(type, coordinates, color) {
       let theThing = Object.assign(new Component(dials[type].args), dials[type].defaults);
-      theThing.x = coordinates.x,
-      theThing.y = coordinates.y,
+      theThing.x = coordinates.x;
+      theThing.y = coordinates.y;
+      theThing.row = coordinates.row;
       theThing.pointValue = dials[type].pointValue || metrics.currentLevel + 1;
       return theThing;
     },
@@ -60,11 +61,13 @@ var gameObjects = {
         if (!this.invaders.reverseDirectionX) {
           this.determineDirections();
         };
-        this.updateDirections();
+        if (this.invaders.objects.length < 3) {
+          this.invaders.speed = dials.invaders.speed.fast;
+        } else {
+          this.invaders.speed = dials.invaders.speed.default;
+        };
+        this.updateVelocity();
         this.shootBolts();
-      };
-      if (type == 'bolts') {
-
       };
       objects.forEach(obj => obj.update());
       objects.forEach(obj => obj.newPos());
@@ -96,7 +99,7 @@ var gameObjects = {
     this[type].currRow = coordinates.length % max == 0 ? this[type].currRow + 1 : this[type].currRow;
     let xCoord = lastX + spacing;
     let yCoord = dials[type].args.y + ((this[type].currRow - 1) * spacing / 2);
-    coordinates.push({x : xCoord, y : yCoord});
+    coordinates.push({x : xCoord, y : yCoord, row : this[type].currRow});
     if (coordinates.length < toMake) {
       this.setCoordinates(type);
     };
@@ -130,7 +133,7 @@ var gameObjects = {
     let hasCollided = isOutside && hasMovedEnoughHorizontally;
     return hasCollided;
   },
-  updateDirections : function() {
+  updateVelocity : function() {
     this.invaders.objects.forEach(element => {
       if (this.invaders.reverseDirectionX) {
         element.speedX *= -1;
@@ -138,6 +141,7 @@ var gameObjects = {
       } else {
         element.distanceMovedX += 1;
       };
+      element.speedX = Math.sign(element.speedX) * this.invaders.speed;
     });
     this.invaders.reverseDirectionX = false;
   },

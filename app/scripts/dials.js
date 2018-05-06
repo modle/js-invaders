@@ -28,7 +28,6 @@ var dials = {
   general : {
     init : function(configs) {
       this.gridSquareSideLength = Math.floor(configs.canvas.width / configs.canvas.gridDivisor);
-      console.log(this.gridSquareSideLength);
       console.log('general defaults initialized');
     },
   },
@@ -71,7 +70,10 @@ var dials = {
     }
   },
   invaders : {
-    baseSpeed : 10,
+    speed : {
+      default : 0.5,
+      fast : 2,
+    },
     initialAmount : 6,
     maxNumber : 7,
     rows : 5,
@@ -84,14 +86,18 @@ var dials = {
         animationInterval : 50,
         hitPoints : 1,
         type : 'invader',
-        // speed : {x : 0, y : 0},
         speed : {x : 0.25, y : 0},
       },
       sprites : {
-        one : {activeIndex : 0, files : ['invader-a-1.png', 'invader-a-2.png'], images : []},
+        1 : {activeIndex : 0, files : ['invader-1-a.png', 'invader-1-b.png'], images : []},
+        2 : {activeIndex : 0, files : ['invader-2-a.png', 'invader-2-b.png'], images : []},
+        3 : {activeIndex : 0, files : ['invader-3-a.png', 'invader-3-b.png'], images : []},
+        4 : {activeIndex : 0, files : ['invader-4-a.png', 'invader-4-b.png'], images : []},
+        5 : {activeIndex : 0, files : ['invader-5-a.png', 'invader-5-b.png'], images : []},
       },
       getSpriteKey : function(obj) {
-        return 'one';
+        // console.log(obj.row, this.sprites[obj.row]);
+        return obj.row;
       },
     },
     defaults : {
@@ -118,7 +124,7 @@ var dials = {
   },
   lasers : {
     speed : {
-      value : 5,
+      value : 10,
       default : 5,
       setting : {
         value : 15,
@@ -130,7 +136,7 @@ var dials = {
       },
     },
     quantity : {
-      value : 1,
+      value : 10,
       default : 1,
       setting : {
         value : 5,
