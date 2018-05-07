@@ -1,7 +1,7 @@
-
 try {
   libsInit.run();
-} catch (err) {
-  throw ('PROBLEM: ' + err);
-}
-init.run();
+  init.run();
+  game.start();
+} catch(err) {
+  window.location.href = window.location.href
+};
