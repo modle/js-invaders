@@ -7,8 +7,7 @@ var main = {
   functionOverrides : {
     manageGameObjects : function() {
       metrics.manage();
-      // shields.manage();
-      // invaders.manage();
+      gameObjects.manage();
       lasers.manage();
       players.manage();
       collisions.check();

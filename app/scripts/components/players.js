@@ -2,7 +2,7 @@ players = {
   currentSelection : undefined,
   init : function() {
     Object.assign(this, playersBase);
-    this.buildPlayers(game.numberOfPlayers, knobsAndLevers.player.args);
+    this.buildPlayers(game.numberOfPlayers, dials.player.args);
     supporting.applyOverrides(this);
     this.updateAvailableDirections();
     console.log('players initialized');
@@ -13,7 +13,7 @@ players = {
       this.boundaries.insideLeft = player.getLeft() > 0;
     },
     collidedWithBarrier : function(player) {
-      return collisions.withShields(player);
+      return false;
     },
   },
   updateAvailableDirections : function() {

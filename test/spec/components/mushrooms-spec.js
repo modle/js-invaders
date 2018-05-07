@@ -8,7 +8,7 @@ describe('MUSHROOMS SPEC: ', () => {
   });
   beforeEach(function () {
     testObj = Object.assign({}, shields);
-    knobsAndLevers.init();
+    dials.init();
     game.init();
   });
   it('manage calls spawn and update on frame 1', () => {
@@ -64,7 +64,7 @@ describe('MUSHROOMS SPEC: ', () => {
   });
 
   it('update calls update on shield objects', () => {
-    knobsAndLevers.shields.scaleFactor = 0.1
+    dials.shields.scaleFactor = 0.1
     let coordinates = {hitPoints: 5, x: 5, y: 5};
     testObj.shields = [{hitPoints: 5, x: 5.1, y: 5.1}];
 

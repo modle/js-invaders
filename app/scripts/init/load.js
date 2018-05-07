@@ -40,13 +40,12 @@ var libs = [
 
 var scripts = [
   'collisions.js',
-  'components/invaders.js',
+  'components/game-objects.js',
   'components/lasers.js',
-  'components/shields.js',
   'components/players.js',
   'game.js',
   'init/init.js',
-  'knobs-and-levers.js',
+  'dials.js',
   'main.js',
   'properties/menus-props.js',
   'sounds.js',

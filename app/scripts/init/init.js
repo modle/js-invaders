@@ -2,7 +2,7 @@ var init = {
   run : function() {
     console.log('start space invaders init');
 
-    knobsAndLevers.init();
+    dials.init();
 
     dom.init();
     game.init();
@@ -16,15 +16,16 @@ var init = {
     sounds.init();
     texts.init();
     collisions.init();
-    invaders.init();
     lasers.init();
-    shields.init();
+    gameObjects.init();
+    // invaders.init();
+    // shields.init();
 
     console.log('space invaders game initialized');
   },
   afterGameOver : function() {
     console.log('reset everything');
-    knobsAndLevers.init();
+    dials.init();
     menus.init();
     metrics.init();
     texts.init();

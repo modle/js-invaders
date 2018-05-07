@@ -8,20 +8,21 @@ var collisions = {
   },
   functionOverrides : {
     handleSpecialKills(target) {
-      if (target.type === 'invader') {
-        shields.make({x : target.x, y : target.y})
-        invaders.numberKilled += 1;
+      if (target.type == 'invader') {
+        gameObjects.invaders.numberKilled += 1;
       };
     },
     getPlayerEnemies : function() {
       let enemies = [];
-      enemies.push(...invaders.invaders);
+      enemies.push(...gameObjects.invaders.objects);
+      enemies.push(...gameObjects.bolts.objects);
       return enemies;
     },
     getLaserTargets : function() {
       let targets = [];
-      targets.push(...shields.shields);
-      targets.push(...invaders.invaders);
+      targets.push(...gameObjects.shields.objects);
+      targets.push(...gameObjects.invaders.objects);
+      targets.push(...gameObjects.bolts.objects);
       return targets;
     },
     check : function() {
@@ -32,10 +33,17 @@ var collisions = {
       Object.keys(players.players).forEach(player =>
         this.checkPlayerVsEnemies(players.players[player], this.getPlayerEnemies())
       );
-      this.removeDestroyedTargets(targets);
+      gameObjects.bolts.objects.forEach(bolt => {
+        let shield = this.withShields(bolt);
+        if (shield) {
+          shield.hitPoints = 0;
+          bolt.hitPoints = 0;
+        };
+      })
+      gameObjects.removeDestroyedTargets();
     },
     checkPlayerVsEnemies : function(player, targets) {
-      if (!knobsAndLevers.game.playerCollisionsEnabled) {
+      if (!dials.game.playerCollisionsEnabled) {
         return;
       };
       targets.forEach(target => {
@@ -45,12 +53,8 @@ var collisions = {
         };
       });
     },
-    removeDestroyedTargets : function(targets) {
-      shields.shields = shields.shields.filter(shield => shield.hitPoints > 0);
-      invaders.invaders = invaders.invaders.filter(invader => invader.hitPoints > 0);
-    },
   },
   withShields : function(obj) {
-    return shields.shields.find(shield => obj.crashWith(shield));
+    return gameObjects.shields.objects.find(shield => obj.crashWith(shield));
   },
 };
