@@ -112,7 +112,6 @@ var dials = {
         5 : {activeIndex : 0, files : ['invader-5-a.png', 'invader-5-b.png'], images : []},
       },
       getSpriteKey : function(obj) {
-        // console.log(obj.row, this.sprites[obj.row]);
         return obj.row;
       },
     },
@@ -123,8 +122,6 @@ var dials = {
       updated : false,
     },
     init : function(configs) {
-      // this.args.width = configs.general.gridSquareSideLength * 3;
-      // this.args.height = configs.general.gridSquareSideLength * 2;
       this.spacing = dials.canvas.width / 8;
       this.args.x = configs.canvas.width / 2;
       console.log('invader defaults initialized');
@@ -134,7 +131,7 @@ var dials = {
     imageTypes : ['invader', 'player', 'ufo'],
   },
   dom : {
-    blogUrl : 'http://blog.matthewodle.com/category/space-invaders/',
+    blogUrl : 'http://blog.matthewodle.com/category/game-development/',
     sourceUrl : 'https://gitlab.com/taciturn-pachyderm/space-invaders',
     gifLocation : 'app/static/media/images/background.gif',
   },
